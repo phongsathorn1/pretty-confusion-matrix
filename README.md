@@ -3,12 +3,13 @@ The Pretty Confusion Matrix in MATLAB style for python, using seaborn and matplo
 
 This repository was forked and modified from [Wagner's Pretty print confusion matrix](https://github.com/wcipriano/pretty-print-confusion-matrix).
 
-**Examples**:
+---
+**Example**:
 
 <img src="Screenshots/conf_matrix_default.png" width="650" alt="Example of Pretty Confusion Matrix">
 
 ## Installation
-- Install required packages:
+- Install the required packages:
    ```bash
    pip install -r requirements.txt
    ```
