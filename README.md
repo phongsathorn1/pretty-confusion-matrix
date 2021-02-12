@@ -5,7 +5,8 @@ This repository was forked and rewrite from [Wagner's Pretty print confusion mat
 
 
 **Examples**:
-![Pretty Confusion Matrix](Screenshots/conf_matrix_default.png)
+
+<img src="Screenshots/conf_matrix_default.png" width="650" alt="Example of Pretty Confusion Matrix">
 
 ## Quickstart
 This module get a pretty print confusion matrix from a np matrix or from a y_test and predition values
