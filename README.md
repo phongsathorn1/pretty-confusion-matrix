@@ -1,15 +1,13 @@
 # Pretty Confusion Matrix for Python
-The Pretty Confusion Matrix in MatLab style for python, using seaborn and matplotlib.
+The Pretty Confusion Matrix in MATLAB style for python, using seaborn and matplotlib.
 
-This repository was forked and rewrite from [Wagner's Pretty print confusion matrix](https://github.com/wcipriano/pretty-print-confusion-matrix).
-
+This repository was forked and modified from [Wagner's Pretty print confusion matrix](https://github.com/wcipriano/pretty-print-confusion-matrix).
 
 **Examples**:
 
 <img src="Screenshots/conf_matrix_default.png" width="650" alt="Example of Pretty Confusion Matrix">
 
-## Quickstart
-This module get a pretty print confusion matrix from a np matrix or from a y_test and predition values
+## Usage
 
 - **Plot from numpy `x` and `y` vectors**
 ```python
@@ -35,9 +33,11 @@ cm = np.array([[13,  0,  1,  0,  2,  0],
 plot_from_confusion_matrix(cm)
 ```
 
+## Licensing
+The Pretty Confusion Matrix is licensed under Apache License, Version 2.0. see [License](LICENSE) for full license text.
 
 ## References:
-1. MatLab confusion matrix
+1. MATLAB confusion matrix
 
    - https://www.mathworks.com/help/nnet/ref/plotconfusion.html
    
