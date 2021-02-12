@@ -40,6 +40,16 @@ This repository was forked and modified from [Wagner's Pretty print confusion ma
    plot_from_confusion_matrix(cm)
    ```
 
+- **Plot with custom labels**
+   ```python
+   plot_from_data(y_test, predic, 
+                  columns=["Dog", "Cat", "Potato", "Car", "IU <3"])
+   ```
+
+   Result:
+
+   <img src="Screenshots/conf_matrix_custom_labels.png" width="450" alt="Example of Pretty Confusion Matrix">
+
 ## Licensing
 The Pretty Confusion Matrix is licensed under Apache License, Version 2.0. see [License](LICENSE) for full license text.
 
