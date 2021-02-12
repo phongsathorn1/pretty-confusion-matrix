@@ -24,6 +24,11 @@ import seaborn as sn
 from pandas import DataFrame
 from matplotlib.collections import QuadMesh
 from sklearn.metrics import confusion_matrix
+from matplotlib.colors import LinearSegmentedColormap
+
+
+colors = [(0.98, 0.77, 0.75), (0.98, 0.77, 0.75)]
+cm_cmap = LinearSegmentedColormap.from_list('cm_color', colors, N=1)
 
 
 def get_new_fig(fn, figsize=[9,9]):
@@ -126,7 +131,7 @@ def insert_totals(df_cm):
     #print ('\ndf_cm:\n', df_cm, '\n\b\n')
 #
 
-def plot_from_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=11,
+def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11,
       lw=2, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
@@ -209,7 +214,7 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=
     plt.show()
 #
 
-def plot_from_data(y_test, predictions, columns=None, annot=True, cmap="Oranges",
+def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
       fmt='.2f', fz=11, lw=1, cbar=False, figsize=[8,8], show_null_values=2, pred_val_axis='lin'):
     """
         plot confusion matrix function with y_test (actual values) and predictions (predic),
@@ -252,8 +257,6 @@ def _test_cm():
 def _test_data_class():
     """ test function with y_test (actual values) and predictions (predic) """
 
-    from matplotlib.colors import LinearSegmentedColormap
-
     #data
     y_test = np.array([1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5])
     predic = np.array([1,2,4,3,5, 1,2,4,3,5, 1,2,3,4,4, 1,4,3,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,3,3,5, 1,2,3,3,5, 1,2,3,4,4, 1,2,3,4,1, 1,2,3,4,1, 1,2,3,4,1, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5])
@@ -264,10 +267,7 @@ def _test_data_class():
         actual: 3 and prediction 4   >>  10
     """
 
-    colors = [(0.98, 0.77, 0.75), (0.98, 0.77, 0.75)]
-    cmap = LinearSegmentedColormap.from_list('rrr', colors, N=1)
-
-    plot_from_data(y_test, predic, annot=True, cmap=cmap)
+    plot_from_data(y_test, predic, annot=True)
 
 
 if __name__ == '__main__':
