@@ -34,10 +34,9 @@ cm_cmap = LinearSegmentedColormap.from_list('cm_color', colors, N=1)
 def get_new_fig(fn, figsize=[9,9]):
     """ Init graphics """
     fig1 = plt.figure(fn, figsize)
-    ax1 = fig1.gca()   #Get Current Axis
-    ax1.cla() # clear existing plot
+    ax1 = fig1.gca()    #Get Current Axis
+    ax1.cla()   # clear existing plot
     return fig1, ax1
-#
 
 def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, fmt, show_null_values=0):
     """
@@ -71,7 +70,7 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
         else:
             per_ok = per_err = 0
 
-        per_ok_s = ['%.2f%%'%(per_ok), '100%'] [per_ok == 100]
+        per_ok_s = ['%.2f%%'%(per_ok), '100%'] [(per_ok == 100).astype(np.int)]
 
         #text to DEL
         text_del.append(oText)
@@ -115,7 +114,6 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
             facecolors[posi] = [0.76, 0.89, 0.78, 1.0]
 
     return text_add, text_del
-#
 
 def insert_totals(df_cm):
     """ insert total column and line (the last ones) """
@@ -128,8 +126,6 @@ def insert_totals(df_cm):
     df_cm['sum_lin'] = sum_lin
     sum_col.append(np.sum(sum_lin))
     df_cm.loc['sum_col'] = sum_col
-    #print ('\ndf_cm:\n', df_cm, '\n\b\n')
-#
 
 def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11,
       lw=2, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
@@ -169,11 +165,11 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11
 
     # Turn off all the ticks
     for t in ax.xaxis.get_major_ticks():
-        t.tick1On = False
-        t.tick2On = False
+        t.tick1line.set_visible = False
+        t.tick2line.set_visible = False
     for t in ax.yaxis.get_major_ticks():
-        t.tick1On = False
-        t.tick2On = False
+        t.tick1line.set_visible = False
+        t.tick2line.set_visible = False
 
     #face colors list
     quadmesh = ax.findobj(QuadMesh)[0]
@@ -184,7 +180,7 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11
     text_add = []
     text_del = []
     posi = -1 #from left to right, bottom to top.
-    for t in ax.collections[0].axes.texts: #ax.texts:
+    for t in ax.collections[0].axes.texts:
         pos = np.array( t.get_position()) - [0.5,0.5]
         lin = int(pos[1]); col = int(pos[0])
         posi += 1
@@ -210,9 +206,8 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11
     ax.set_xticklabels(df_cm.columns[:-1], fontdict={"horizontalalignment": "center"})
     ax.set_yticklabels(df_cm.index[:-1], fontdict={"verticalalignment": "center"})
 
-    plt.tight_layout()  #set layout slim
+    plt.tight_layout()
     plt.show()
-#
 
 def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
       fmt='.2f', fz=11, lw=1, cbar=False, figsize=[8,8], show_null_values=2, pred_val_axis='lin'):
@@ -223,18 +218,12 @@ def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
 
     #data
     if(not columns):
-        #labels axis integer:
-        ##columns = range(1, len(np.unique(y_test))+1)
-        #labels axis string:
         from string import ascii_uppercase
         columns = ['class %s' %(i) for i in list(ascii_uppercase)[0:len(np.unique(y_test))]]
 
     confm = confusion_matrix(y_test, predictions)
     df_cm = DataFrame(confm, index=columns, columns=columns)
     plot_from_confusion_matrix(df_cm, fz=fz, lw=lw, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
-#
-
-
 
 #
 #TEST functions
@@ -252,7 +241,7 @@ def _test_cm():
     #colormap: see this and choose your more dear
     cmap = 'PuRd'
     plot_from_confusion_matrix(df_cm, cmap=cmap)
-#
+
 
 def _test_data_class():
     """ test function with y_test (actual values) and predictions (predic) """
@@ -271,10 +260,6 @@ def _test_data_class():
 
 
 if __name__ == '__main__':
-    print('__main__')
-    # print('_test_cm: test function with confusion matrix done\nand pause')
-    # _test_cm()
-    # plt.pause(5)
     print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
     _test_data_class()
 
