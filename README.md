@@ -1,5 +1,5 @@
 # Pretty Confusion Matrix for Python
-The Pretty Confusion Matrix in MATLAB style for python, using seaborn and matplotlib.
+The Pretty Confusion Matrix in Python with MATLAB like style, using seaborn and matplotlib.
 
 This repository was forked and modified from [Wagner's Pretty print confusion matrix](https://github.com/wcipriano/pretty-print-confusion-matrix).
 
