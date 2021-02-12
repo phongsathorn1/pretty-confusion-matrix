@@ -1,35 +1,43 @@
-# Confusion Matrix in Python
-Plot a pretty confusion matrix (like Matlab) in python using seaborn and matplotlib
+# Pretty Confusion Matrix for Python
+The Pretty Confusion Matrix in MatLab style for python, using seaborn and matplotlib.
+
+This repository was forked and rewrite from [Wagner's Pretty print confusion matrix](https://github.com/wcipriano/pretty-print-confusion-matrix).
 
 
-Created on Mon Jun 25 14:17:37 2018
-@author: Wagner Cipriano - wagnerbhbr
+**Examples**:
+![Pretty Confusion Matrix](Screenshots/conf_matrix_default.png)
 
-
+## Quickstart
 This module get a pretty print confusion matrix from a np matrix or from a y_test and predition values
 
-Examples:
-![alt text](https://raw.githubusercontent.com/wcipriano/pretty-print-confusion-matrix/master/Screenshots/conf_matrix_default_1.png)
+- **Plot from numpy `x` and `y` vectors**
+```python
+from pretty_cm import plot_from_data
 
-![alt text](https://raw.githubusercontent.com/wcipriano/pretty-print-confusion-matrix/master/Screenshots/conf_matrix_default_3.png)
+y_test = np.array([1,2,3,4,5, 1,2,3,4,5, ...])
+predic = np.array([1,2,4,3,5, 1,2,3,4,4, ...])
+
+plot_from_data(y_test, predic)
+```
+
+- **Plot from numpy confusion matrix**
+```python
+from pretty_cm import plot_from_confusion_matrix
+
+cm = np.array([[13,  0,  1,  0,  2,  0],
+               [ 0, 50,  2,  0, 10,  0],
+               [ 0, 13, 16,  0,  0,  3],
+               [ 0,  0,  0, 13,  1,  0],
+               [ 0, 40,  0,  1, 15,  0],
+               [ 0,  0,  0,  0,  0, 20]])
+
+plot_from_confusion_matrix(cm)
+```
 
 
+## References:
+1. MatLab confusion matrix
 
-
-REFerences:
-1. Mat lab confusion matrix
-
-   https://www.mathworks.com/help/nnet/ref/plotconfusion.html
+   - https://www.mathworks.com/help/nnet/ref/plotconfusion.html
    
-   https://www.mathworks.com/help/examples/nnet/win64/PlotConfusionMatrixUsingCategoricalLabelsExample_02.png
-
-   https://stackoverflow.com/questions/5821125/how-to-plot-confusion-matrix-with-string-axis-rather-than-integer-in-python/51176855#51176855
-
-
-2. Other Examples in python
-  
-  a) https://stackoverflow.com/a/51176855/1809554
-  
-  b) https://www.programcreek.com/python/example/96197/seaborn.heatmap
-
-  c) http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
+   - https://www.mathworks.com/help/examples/nnet/win64/PlotConfusionMatrixUsingCategoricalLabelsExample_02.png
