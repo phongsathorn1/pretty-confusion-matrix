@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 plot a pretty confusion matrix with seaborn
+
 Created on Mon Jun 25 14:17:37 2018
 @author: Wagner Cipriano - wagnerbhbr - gmail - CEFETMG / MMC
 REFerences:
@@ -12,13 +13,14 @@ REFerences:
   http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
 """
 
-#imports
-from pandas import DataFrame
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-from matplotlib.collections import QuadMesh
 import seaborn as sn
+
+from pandas import DataFrame
+from matplotlib.collections import QuadMesh
+from sklearn.metrics import confusion_matrix
 
 
 def get_new_fig(fn, figsize=[9,9]):
@@ -121,7 +123,7 @@ def insert_totals(df_cm):
     #print ('\ndf_cm:\n', df_cm, '\n\b\n')
 #
 
-def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=11,
+def plot_from_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=11,
       lw=2, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
@@ -171,13 +173,13 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
 
     #iter in text elements
     array_df = np.array( df_cm.to_records(index=False).tolist() )
-    text_add = []; text_del = [];
+    text_add = []
+    text_del = []
     posi = -1 #from left to right, bottom to top.
     for t in ax.collections[0].axes.texts: #ax.texts:
         pos = np.array( t.get_position()) - [0.5,0.5]
-        lin = int(pos[1]); col = int(pos[0]);
+        lin = int(pos[1]); col = int(pos[0])
         posi += 1
-        #print ('>>> pos: %s, posi: %s, val: %s, txt: %s' %(pos, posi, array_df[lin][col], t.get_text()))
 
         #set text
         txt_res = configcell_text_and_colors(array_df, lin, col, t, facecolors, posi, fz, fmt, show_null_values)
@@ -204,14 +206,12 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
     plt.show()
 #
 
-def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=True, cmap="Oranges",
-      fmt='.2f', fz=11, lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='lin'):
+def plot_from_data(y_test, predictions, columns=None, annot=True, cmap="Oranges",
+      fmt='.2f', fz=11, lw=1, cbar=False, figsize=[8,8], show_null_values=2, pred_val_axis='lin'):
     """
         plot confusion matrix function with y_test (actual values) and predictions (predic),
         whitout a confusion matrix yet
     """
-    from sklearn.metrics import confusion_matrix
-    from pandas import DataFrame
 
     #data
     if(not columns):
@@ -223,7 +223,7 @@ def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=Tru
 
     confm = confusion_matrix(y_test, predictions)
     df_cm = DataFrame(confm, index=columns, columns=columns)
-    pretty_plot_confusion_matrix(df_cm, fz=fz, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
+    plot_from_confusion_matrix(df_cm, fz=fz, lw=lw, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
 #
 
 
@@ -243,7 +243,7 @@ def _test_cm():
     df_cm = DataFrame(array, index=range(1,7), columns=range(1,7))
     #colormap: see this and choose your more dear
     cmap = 'PuRd'
-    pretty_plot_confusion_matrix(df_cm, cmap=cmap)
+    plot_from_confusion_matrix(df_cm, cmap=cmap)
 #
 
 def _test_data_class():
@@ -260,28 +260,13 @@ def _test_data_class():
         actual: 2 and prediction 4   >>  1
         actual: 3 and prediction 4   >>  10
     """
-    columns = []
-    annot = True
 
     colors = [(0.98, 0.77, 0.75), (0.98, 0.77, 0.75)]
     cmap = LinearSegmentedColormap.from_list('rrr', colors, N=1)
 
-    fmt = '.2f'
-    lw = 0.5
-    cbar = False
-    show_null_values = 2
-    pred_val_axis = 'y'
-    #size::
-    fz = 11
-    figsize = [7,7]
-    plot_confusion_matrix_from_data(y_test, predic, columns,
-      annot, cmap, fmt, fz, lw, cbar, figsize, show_null_values, pred_val_axis)
-#
+    plot_from_data(y_test, predic, annot=True, cmap=cmap)
 
 
-#
-#MAIN function
-#
 if(__name__ == '__main__'):
     print('__main__')
     # print('_test_cm: test function with confusion matrix done\nand pause')
