@@ -9,21 +9,25 @@ This repository was forked and modified from [Wagner's Pretty print confusion ma
 <img src="Screenshots/conf_matrix_default.png" width="650" alt="Example of Pretty Confusion Matrix">
 
 ## Installation
-- Install the required packages:
+- Clone this repository:
+   ```bash
+   git clone https://github.com/phongsathorn1/pretty-confusion-matrix.git
+   ```
+- Install required packages:
    ```bash
    pip install -r requirements.txt
    ```
 
 ## Usage
 
-- **Plot from numpy `x` and `y` vectors**
+- **Plot from numpy `y_predict` and `y_actual` vectors**
    ```python
    from pretty_cm import plot_from_data
 
-   y_test = np.array([1,2,3,4,5, 1,2,3,4,5, ...])
-   predic = np.array([1,2,4,3,5, 1,2,3,4,4, ...])
+   y_actual = np.array([1,2,3,4,5, 1,2,3,4,5, ...])
+   y_predict = np.array([1,2,4,3,5, 1,2,3,4,4, ...])
 
-   plot_from_data(y_test, predic)
+   plot_from_data(y_actual, y_predict)
    ```
 
 - **Plot from numpy confusion matrix**
@@ -44,11 +48,24 @@ This repository was forked and modified from [Wagner's Pretty print confusion ma
    ```python
    plot_from_data(y_test, predic, 
                   columns=["Dog", "Cat", "Potato", "Car", "IU <3"])
+
+   # -- or --
+
+   plot_from_confusion_matrix(cm, columns=["Dog", "Cat", "Potato", "Car", "IU <3"])
    ```
 
    Result:
 
    <img src="Screenshots/conf_matrix_custom_labels.png" width="450" alt="Example of Pretty Confusion Matrix">
+
+- **Change figure size**
+   ```python
+   plot_from_data(y_test, predic, figsize=[6,6])
+
+   # -- or --
+
+   plot_from_confusion_matrix(cm, figsize=[6,6])
+   ```
 
 ## Licensing
 The Pretty Confusion Matrix is licensed under Apache License, Version 2.0. see [License](LICENSE) for full license text.
