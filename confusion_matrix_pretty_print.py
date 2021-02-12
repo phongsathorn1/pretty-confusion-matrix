@@ -67,45 +67,42 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
         text_del.append(oText)
 
         #text to ADD
-        font_prop = fm.FontProperties(weight='bold', size=fz)
-        text_kwargs = dict(color='w', ha="center", va="center", gid='sum', fontproperties=font_prop)
+        font_prop = fm.FontProperties(size=fz)
+        text_kwargs = dict(color='black', ha="center", va="center", gid='sum', fontproperties=font_prop)
         lis_txt = ['%d'%(cell_val), per_ok_s, '%.2f%%'%(per_err)]
         lis_kwa = [text_kwargs]
         dic = text_kwargs.copy(); dic['color'] = 'g'; lis_kwa.append(dic);
         dic = text_kwargs.copy(); dic['color'] = 'r'; lis_kwa.append(dic);
-        lis_pos = [(oText._x, oText._y-0.3), (oText._x, oText._y), (oText._x, oText._y+0.3)]
+        lis_pos = [(oText._x, oText._y-0.18), (oText._x, oText._y), (oText._x, oText._y+0.18)]
         for i in range(len(lis_txt)):
             newText = dict(x=lis_pos[i][0], y=lis_pos[i][1], text=lis_txt[i], kw=lis_kwa[i])
-            #print 'lin: %s, col: %s, newText: %s' %(lin, col, newText)
             text_add.append(newText)
-        #print '\n'
 
         #set background color for sum cells (last line and last column)
-        carr = [0.27, 0.30, 0.27, 1.0]
+        carr = [0.94, 0.94, 0.94, 1.0]
         if(col == ccl - 1) and (lin == ccl - 1):
-            carr = [0.17, 0.20, 0.17, 1.0]
+            carr = [0.85, 0.85, 0.85, 1.0]
         facecolors[posi] = carr
 
     else:
         if(per > 0):
-            txt = '%s\n%.2f%%' %(cell_val, per)
+            txt = '$\mathbf{%s}$\n%.2f%%' %(cell_val, per)
         else:
+            # pass
             if(show_null_values == 0):
                 txt = ''
             elif(show_null_values == 1):
                 txt = '0'
             else:
-                txt = '0\n0.0%'
+                txt = '$\mathbf{0}$\n0.0%'
         oText.set_text(txt)
 
         #main diagonal
         if(col == lin):
             #set color of the textin the diagonal to white
-            oText.set_color('w')
+            oText.set_color('black')
             # set background color in the diagonal to blue
-            facecolors[posi] = [0.35, 0.8, 0.55, 1.0]
-        else:
-            oText.set_color('r')
+            facecolors[posi] = [0.76, 0.89, 0.78, 1.0]
 
     return text_add, text_del
 #
@@ -125,7 +122,7 @@ def insert_totals(df_cm):
 #
 
 def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=11,
-      lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
+      lw=2, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
       params:
@@ -154,11 +151,11 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
 
     #thanks for seaborn
     ax = sn.heatmap(df_cm, annot=annot, annot_kws={"size": fz}, linewidths=lw, ax=ax1,
-                    cbar=cbar, cmap=cmap, linecolor='w', fmt=fmt)
+                    cbar=cbar, cmap=cmap, linecolor='black', fmt=fmt)
 
     #set ticklabels rotation
-    ax.set_xticklabels(ax.get_xticklabels(), rotation = 45, fontsize = 10)
-    ax.set_yticklabels(ax.get_yticklabels(), rotation = 25, fontsize = 10)
+    # ax.set_xticklabels(ax.get_xticklabels(), rotation = 45, fontsize = 10)
+    # ax.set_yticklabels(ax.get_yticklabels(), rotation = 0, fontsize = 10)
 
     # Turn off all the ticks
     for t in ax.xaxis.get_major_ticks():
@@ -196,9 +193,13 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
         ax.text(item['x'], item['y'], item['text'], **item['kw'])
 
     #titles and legends
-    ax.set_title('Confusion matrix')
-    ax.set_xlabel(xlbl)
-    ax.set_ylabel(ylbl)
+    ax.set_title('Confusion matrix', fontdict={"weight": "bold"})
+    ax.set_xlabel(xlbl, fontdict={"weight": "bold"})
+    ax.set_ylabel(ylbl, fontdict={"weight": "bold"})
+
+    ax.set_xticklabels(df_cm.columns[:-1], fontdict={"horizontalalignment": "center"})
+    ax.set_yticklabels(df_cm.index[:-1], fontdict={"verticalalignment": "center"})
+
     plt.tight_layout()  #set layout slim
     plt.show()
 #
@@ -221,10 +222,6 @@ def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=Tru
         columns = ['class %s' %(i) for i in list(ascii_uppercase)[0:len(np.unique(y_test))]]
 
     confm = confusion_matrix(y_test, predictions)
-    cmap = 'Oranges';
-    fz = 11;
-    figsize=[9,9];
-    show_null_values = 2
     df_cm = DataFrame(confm, index=columns, columns=columns)
     pretty_plot_confusion_matrix(df_cm, fz=fz, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
 #
@@ -251,6 +248,9 @@ def _test_cm():
 
 def _test_data_class():
     """ test function with y_test (actual values) and predictions (predic) """
+
+    from matplotlib.colors import LinearSegmentedColormap
+
     #data
     y_test = np.array([1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5])
     predic = np.array([1,2,4,3,5, 1,2,4,3,5, 1,2,3,4,4, 1,4,3,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,3,3,5, 1,2,3,3,5, 1,2,3,4,4, 1,2,3,4,1, 1,2,3,4,1, 1,2,3,4,1, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,4,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5, 1,2,3,4,5])
@@ -261,18 +261,19 @@ def _test_data_class():
         actual: 3 and prediction 4   >>  10
     """
     columns = []
-    annot = True;
-    cmap = 'Oranges';
+    annot = True
+
+    colors = [(0.98, 0.77, 0.75), (0.98, 0.77, 0.75)]
+    cmap = LinearSegmentedColormap.from_list('rrr', colors, N=1)
+
     fmt = '.2f'
     lw = 0.5
     cbar = False
     show_null_values = 2
     pred_val_axis = 'y'
     #size::
-    fz = 12;
-    figsize = [9,9];
-    if(len(y_test) > 10):
-        fz=9; figsize=[14,14];
+    fz = 11
+    figsize = [7,7]
     plot_confusion_matrix_from_data(y_test, predic, columns,
       annot, cmap, fmt, fz, lw, cbar, figsize, show_null_values, pred_val_axis)
 #
@@ -283,9 +284,9 @@ def _test_data_class():
 #
 if(__name__ == '__main__'):
     print('__main__')
-    print('_test_cm: test function with confusion matrix done\nand pause')
-    _test_cm()
-    plt.pause(5)
+    # print('_test_cm: test function with confusion matrix done\nand pause')
+    # _test_cm()
+    # plt.pause(5)
     print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
     _test_data_class()
 
