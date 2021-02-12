@@ -82,7 +82,7 @@ def configcell_text_and_colors(array_df, lin, col, oText, facecolors, posi, fz, 
         lis_kwa = [text_kwargs]
         dic = text_kwargs.copy(); dic['color'] = 'g'; lis_kwa.append(dic);
         dic = text_kwargs.copy(); dic['color'] = 'r'; lis_kwa.append(dic);
-        lis_pos = [(oText._x, oText._y-0.18), (oText._x, oText._y), (oText._x, oText._y+0.18)]
+        lis_pos = [(oText._x, oText._y-0.25), (oText._x, oText._y), (oText._x, oText._y+0.25)]
         for i in range(len(lis_txt)):
             newText = dict(x=lis_pos[i][0], y=lis_pos[i][1], text=lis_txt[i], kw=lis_kwa[i])
             text_add.append(newText)
@@ -128,7 +128,7 @@ def insert_totals(df_cm):
     df_cm.loc['sum_col'] = sum_col
 
 def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11,
-      lw=2, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
+      lw=2, cbar=False, figsize=[5,5], show_null_values=0, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
       params:
@@ -210,7 +210,7 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11
     plt.show()
 
 def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
-      fmt='.2f', fz=11, lw=1, cbar=False, figsize=[8,8], show_null_values=2, pred_val_axis='lin'):
+      fmt='.2f', fz=11, lw=1, cbar=False, figsize=[5,5], show_null_values=2, pred_val_axis='lin'):
     """
         plot confusion matrix function with y_test (actual values) and predictions (predic),
         whitout a confusion matrix yet
