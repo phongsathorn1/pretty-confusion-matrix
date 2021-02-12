@@ -11,6 +11,9 @@ REFerences:
   https://www.programcreek.com/python/example/96197/seaborn.heatmap
   https://stackoverflow.com/questions/19233771/sklearn-plot-confusion-matrix-with-labels/31720054
   http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py
+
+Modifications copyright (C) 2021 Phongsathorn Kittiworapanya
+
 """
 
 import numpy as np
@@ -267,7 +270,7 @@ def _test_data_class():
     plot_from_data(y_test, predic, annot=True, cmap=cmap)
 
 
-if(__name__ == '__main__'):
+if __name__ == '__main__':
     print('__main__')
     # print('_test_cm: test function with confusion matrix done\nand pause')
     # _test_cm()
