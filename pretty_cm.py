@@ -127,8 +127,8 @@ def insert_totals(df_cm):
     sum_col.append(np.sum(sum_lin))
     df_cm.loc['sum_col'] = sum_col
 
-def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11,
-      lw=2, cbar=False, figsize=[5,5], show_null_values=0, pred_val_axis='y'):
+def plot_pretty_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11,
+      lw=2, cbar=False, figsize=[5,5], show_null_values=2, pred_val_axis='y'):
     """
       print conf matrix with default layout (like matlab)
       params:
@@ -202,12 +202,20 @@ def plot_from_confusion_matrix(df_cm, annot=True, cmap=cm_cmap, fmt='.2f', fz=11
     ax.set_title('Confusion matrix', fontdict={"weight": "bold"})
     ax.set_xlabel(xlbl, fontdict={"weight": "bold"})
     ax.set_ylabel(ylbl, fontdict={"weight": "bold"})
+    
+    ax.tick_params(axis=u'both', which=u'both',length=0)
 
     ax.set_xticklabels(df_cm.columns[:-1], fontdict={"horizontalalignment": "center"})
     ax.set_yticklabels(df_cm.index[:-1], fontdict={"verticalalignment": "center"})
 
     plt.tight_layout()
     plt.show()
+
+def plot_from_confusion_matrix(cm, columns=None, annot=True, cmap=cm_cmap,
+      fmt='.2f', fz=11, lw=1, cbar=False, figsize=[5,5], show_null_values=2, pred_val_axis='lin'):
+
+    df_cm = DataFrame(cm, index=columns, columns=columns)
+    plot_pretty_confusion_matrix(df_cm, fz=fz, lw=lw, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
 
 def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
       fmt='.2f', fz=11, lw=1, cbar=False, figsize=[5,5], show_null_values=2, pred_val_axis='lin'):
@@ -223,24 +231,21 @@ def plot_from_data(y_test, predictions, columns=None, annot=True, cmap=cm_cmap,
 
     confm = confusion_matrix(y_test, predictions)
     df_cm = DataFrame(confm, index=columns, columns=columns)
-    plot_from_confusion_matrix(df_cm, fz=fz, lw=lw, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
+    plot_pretty_confusion_matrix(df_cm, fz=fz, lw=lw, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
 
 #
 #TEST functions
 #
 def _test_cm():
     #test function with confusion matrix done
-    array = np.array( [[13,  0,  1,  0,  2,  0],
+    cm = np.array( [[13,  0,  1,  0,  2,  0],
                        [ 0, 50,  2,  0, 10,  0],
                        [ 0, 13, 16,  0,  0,  3],
                        [ 0,  0,  0, 13,  1,  0],
                        [ 0, 40,  0,  1, 15,  0],
                        [ 0,  0,  0,  0,  0, 20]])
-    #get pandas dataframe
-    df_cm = DataFrame(array, index=range(1,7), columns=range(1,7))
-    #colormap: see this and choose your more dear
-    cmap = 'PuRd'
-    plot_from_confusion_matrix(df_cm, cmap=cmap)
+
+    plot_from_confusion_matrix(cm, figsize=[6,6], columns=["Dog", "Cat", "Potato", "Car", "IU <3", "Dolphin"])
 
 
 def _test_data_class():
@@ -256,10 +261,10 @@ def _test_data_class():
         actual: 3 and prediction 4   >>  10
     """
 
-    plot_from_data(y_test, predic, annot=True)
+    plot_from_data(y_test, predic)
 
 
 if __name__ == '__main__':
-    print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
+    # print('_test_data_class: test function with y_test (actual values) and predictions (predic)')
     _test_data_class()
-
+    # _test_cm()
